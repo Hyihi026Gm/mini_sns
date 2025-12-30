@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 600px;">
+  <h4 class="mb-3">新規投稿</h4>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {% if form.content.errors %}
+      <div class="text-danger">
+        {{ form.content.errors }}
+      </div>
+    {% endif %}
+    <div class="mb-3">
+      {{ form.content }}
+    </div>
+
+    <button class="btn btn-primary w-100">投稿する</button>
+  </form>
+
+  <a href="{% url 'post_list' %}" class="btn btn-secondary">戻る</a>
+
+</div>
+{% endblock %}

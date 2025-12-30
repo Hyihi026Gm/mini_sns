@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 600px;">
+
+  <h5 class="text-muted">{{ object.user.username }}</h5>
+  <p class="fs-5">{{ object.content }}</p>
+
+  <hr>
+
+  <h6>コメント（{{ object.comments.count }}）</h6>
+
+  {% for comment in object.comments.all %}
+    <div class="border rounded p-2 mb-2">
+      <strong>{{ comment.user.username }}</strong>
+      <p class="mb-1">{{ comment.content }}</p>
+      <small class="text-muted">
+        {{ comment.created_at|date:"Y/m/d H:i" }}
+      </small>
+    </div>
+  {% empty %}
+    <p class="text-muted">まだコメントはありません</p>
+  {% endfor %}
+
+  <hr>
+
+  {% if user.is_authenticated %}
+    <form method="post">
+      {% csrf_token %}
+      {{ comment_form.content }}
+      <button class="btn btn-primary mt-2">コメントする</button>
+    </form>
+  {% else %}
+    <p>
+      <a href="{% url 'login' %}">ログイン</a>するとコメントできます
+    </p>
+  {% endif %}
+
+  <div class="d-flex justify-content-end gap-2">
+    {% if post.user == request.user %}
+        <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">削除</a>
+    {% endif %}
+    <a href="{% url 'post_list' %}" class="btn btn-secondary">戻る</a>
+  </div>
+
+</div>
+{% endblock %}

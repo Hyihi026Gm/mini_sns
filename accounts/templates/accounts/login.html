@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}ログイン{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-4"> 
+    <div class="card shadow-sm mt-5">
+      <div class="card-body">
+        <h3 class="mb-4 text-center">ログイン</h3>
+
+        <form method="post">
+          {% csrf_token %}
+
+          {{ form|crispy }}
+
+          <button class="btn btn-primary w-100">ログイン</button>
+        </form>
+        <hr>
+
+        <div class="text-center">
+          <small>
+            アカウントをお持ちでない方は<br>
+            <a href="{% url 'signup' %}">新規登録はこちら</a>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

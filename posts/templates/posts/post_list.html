@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'post_create' %}" class="btn btn-primary">
+      ＋ 新規投稿
+    </a>
+  </div>
+
+  <h4 class="mb-3">投稿一覧</h4>
+
+  {% for post in posts %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted">
+          {{ post.user.username }}
+        </h6>
+        <div class="post-item">
+          <a href="{% url 'post_detail' post.pk %}" class="text-body text-decoration-none">
+            {{ post.content|truncatechars:100 }}
+          </a>
+        </div>
+        <div class="d-flex gap-2">
+          <form method="post" action="{% url 'like' post.id %}">
+            {% csrf_token %}
+            {% if post.id in liked_posts %}
+                <button type="submit" class="btn btn-sm btn-danger">
+                    ❤️ {{ post.likes.count }}
+                </button>
+            {% else %}
+                <button type="submit" class="btn btn-sm btn-outline-danger">
+                    ❤️ {{ post.likes.count }}
+                </button>
+            {% endif %}
+          </form>
+          <a href="{% url 'post_detail' post.id %}" class="text-decoration-none">
+            💬 {{ post.comments.count }}
+          </a>
+        </div>
+        <div class="d-flex justify-content-end gap-2">{{ post.created_at}}</div>
+      </div>
+    </div>
+  {% empty %}
+    <p>まだ投稿がありません</p>
+  {% endfor %}
+
+</div>
+{% endblock %}
